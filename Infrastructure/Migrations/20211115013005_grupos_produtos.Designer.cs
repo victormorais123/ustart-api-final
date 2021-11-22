@@ -11,8 +11,8 @@ using UStart.Infrastructure.Context;
 namespace UStart.Infrastructure.Migrations
 {
     [DbContext(typeof(UStartContext))]
-    [Migration("20210915231311_dominio-v1")]
-    partial class dominiov1
+    [Migration("20211115013005_grupos_produtos")]
+    partial class grupos_produtos
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +69,10 @@ namespace UStart.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("email");
 
+                    b.Property<string>("EstadoId")
+                        .HasColumnType("text")
+                        .HasColumnName("estado_id");
+
                     b.Property<string>("Fone")
                         .HasColumnType("text")
                         .HasColumnName("fone");
@@ -94,9 +98,9 @@ namespace UStart.Infrastructure.Migrations
                         .HasColumnName("rua");
 
                     b.HasKey("Id")
-                        .HasName("pk_cliente");
+                        .HasName("pk_clientes");
 
-                    b.ToTable("cliente");
+                    b.ToTable("clientes");
                 });
 
             modelBuilder.Entity("UStart.Domain.Entities.FormaPagamento", b =>
@@ -172,10 +176,6 @@ namespace UStart.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("observacao");
 
-                    b.Property<decimal>("PrecoUnitario")
-                        .HasColumnType("numeric")
-                        .HasColumnName("preco_unitario");
-
                     b.Property<decimal>("QuantidadeDeItens")
                         .HasColumnType("numeric")
                         .HasColumnName("quantidade_de_itens");
@@ -197,18 +197,18 @@ namespace UStart.Infrastructure.Migrations
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_orcamento");
+                        .HasName("pk_orcamentos");
 
                     b.HasIndex("ClienteId")
-                        .HasDatabaseName("ix_orcamento_cliente_id");
+                        .HasDatabaseName("ix_orcamentos_cliente_id");
 
                     b.HasIndex("FormaPagamentoId")
-                        .HasDatabaseName("ix_orcamento_forma_pagamento_id");
+                        .HasDatabaseName("ix_orcamentos_forma_pagamento_id");
 
                     b.HasIndex("UsuarioId")
-                        .HasDatabaseName("ix_orcamento_usuario_id");
+                        .HasDatabaseName("ix_orcamentos_usuario_id");
 
-                    b.ToTable("orcamento");
+                    b.ToTable("orcamentos");
                 });
 
             modelBuilder.Entity("UStart.Domain.Entities.OrcamentoItem", b =>
@@ -251,15 +251,15 @@ namespace UStart.Infrastructure.Migrations
                         .HasColumnName("total_unitario");
 
                     b.HasKey("Id")
-                        .HasName("pk_orcamento_item");
+                        .HasName("pk_orcamentos_itens");
 
                     b.HasIndex("OrcamentoId")
-                        .HasDatabaseName("ix_orcamento_item_orcamento_id");
+                        .HasDatabaseName("ix_orcamentos_itens_orcamento_id");
 
                     b.HasIndex("ProdutoId")
-                        .HasDatabaseName("ix_orcamento_item_produto_id");
+                        .HasDatabaseName("ix_orcamentos_itens_produto_id");
 
-                    b.ToTable("orcamento_item");
+                    b.ToTable("orcamentos_itens");
                 });
 
             modelBuilder.Entity("UStart.Domain.Entities.Pedido", b =>
@@ -310,18 +310,18 @@ namespace UStart.Infrastructure.Migrations
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_pedido");
+                        .HasName("pk_pedidos");
 
                     b.HasIndex("ClienteId")
-                        .HasDatabaseName("ix_pedido_cliente_id");
+                        .HasDatabaseName("ix_pedidos_cliente_id");
 
                     b.HasIndex("FormaPagamentoId")
-                        .HasDatabaseName("ix_pedido_forma_pagamento_id");
+                        .HasDatabaseName("ix_pedidos_forma_pagamento_id");
 
                     b.HasIndex("UsuarioId")
-                        .HasDatabaseName("ix_pedido_usuario_id");
+                        .HasDatabaseName("ix_pedidos_usuario_id");
 
-                    b.ToTable("pedido");
+                    b.ToTable("pedidos");
                 });
 
             modelBuilder.Entity("UStart.Domain.Entities.PedidoItem", b =>
@@ -364,15 +364,15 @@ namespace UStart.Infrastructure.Migrations
                         .HasColumnName("total_unitario");
 
                     b.HasKey("Id")
-                        .HasName("pk_pedido_item");
+                        .HasName("pk_pedidos_itens");
 
                     b.HasIndex("PedidoId")
-                        .HasDatabaseName("ix_pedido_item_pedido_id");
+                        .HasDatabaseName("ix_pedidos_itens_pedido_id");
 
                     b.HasIndex("ProdutoId")
-                        .HasDatabaseName("ix_pedido_item_produto_id");
+                        .HasDatabaseName("ix_pedidos_itens_produto_id");
 
-                    b.ToTable("pedido_item");
+                    b.ToTable("pedidos_itens");
                 });
 
             modelBuilder.Entity("UStart.Domain.Entities.Produto", b =>
@@ -453,21 +453,21 @@ namespace UStart.Infrastructure.Migrations
                     b.HasOne("UStart.Domain.Entities.Cliente", "Cliente")
                         .WithMany()
                         .HasForeignKey("ClienteId")
-                        .HasConstraintName("fk_orcamento_cliente_cliente_id")
+                        .HasConstraintName("fk_orcamentos_clientes_cliente_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UStart.Domain.Entities.FormaPagamento", "FormaPagamento")
                         .WithMany()
                         .HasForeignKey("FormaPagamentoId")
-                        .HasConstraintName("fk_orcamento_formas_pagamentos_forma_pagamento_id")
+                        .HasConstraintName("fk_orcamentos_formas_pagamentos_forma_pagamento_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UStart.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .HasConstraintName("fk_orcamento_usuarios_usuario_id")
+                        .HasConstraintName("fk_orcamentos_usuarios_usuario_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -483,14 +483,14 @@ namespace UStart.Infrastructure.Migrations
                     b.HasOne("UStart.Domain.Entities.Orcamento", "Orcamento")
                         .WithMany("Itens")
                         .HasForeignKey("OrcamentoId")
-                        .HasConstraintName("fk_orcamento_item_orcamento_orcamento_id")
+                        .HasConstraintName("fk_orcamentos_itens_orcamentos_orcamento_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UStart.Domain.Entities.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
-                        .HasConstraintName("fk_orcamento_item_produtos_produto_id")
+                        .HasConstraintName("fk_orcamentos_itens_produtos_produto_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -504,21 +504,21 @@ namespace UStart.Infrastructure.Migrations
                     b.HasOne("UStart.Domain.Entities.Cliente", "Cliente")
                         .WithMany()
                         .HasForeignKey("ClienteId")
-                        .HasConstraintName("fk_pedido_cliente_cliente_id")
+                        .HasConstraintName("fk_pedidos_clientes_cliente_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UStart.Domain.Entities.FormaPagamento", "FormaPagamento")
                         .WithMany()
                         .HasForeignKey("FormaPagamentoId")
-                        .HasConstraintName("fk_pedido_formas_pagamentos_forma_pagamento_id")
+                        .HasConstraintName("fk_pedidos_formas_pagamentos_forma_pagamento_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UStart.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .HasConstraintName("fk_pedido_usuarios_usuario_id")
+                        .HasConstraintName("fk_pedidos_usuarios_usuario_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -534,14 +534,14 @@ namespace UStart.Infrastructure.Migrations
                     b.HasOne("UStart.Domain.Entities.Pedido", "Pedido")
                         .WithMany("Itens")
                         .HasForeignKey("PedidoId")
-                        .HasConstraintName("fk_pedido_item_pedido_pedido_id")
+                        .HasConstraintName("fk_pedidos_itens_pedidos_pedido_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UStart.Domain.Entities.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
-                        .HasConstraintName("fk_pedido_item_produtos_produto_id")
+                        .HasConstraintName("fk_pedidos_itens_produtos_produto_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

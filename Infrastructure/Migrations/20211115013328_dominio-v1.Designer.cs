@@ -11,8 +11,8 @@ using UStart.Infrastructure.Context;
 namespace UStart.Infrastructure.Migrations
 {
     [DbContext(typeof(UStartContext))]
-    [Migration("20210918003040_dominio-v2")]
-    partial class dominiov2
+    [Migration("20211115013328_dominio-v1")]
+    partial class dominiov1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,6 +68,10 @@ namespace UStart.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text")
                         .HasColumnName("email");
+
+                    b.Property<string>("EstadoId")
+                        .HasColumnType("text")
+                        .HasColumnName("estado_id");
 
                     b.Property<string>("Fone")
                         .HasColumnType("text")
